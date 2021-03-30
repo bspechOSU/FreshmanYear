@@ -1,0 +1,92 @@
+import components.simplereader.SimpleReader;
+import components.simplereader.SimpleReader1L;
+import components.simplewriter.SimpleWriter;
+import components.simplewriter.SimpleWriter1L;
+
+/**
+ * This program will return the square root of a number to within a certain
+ * range.
+ *
+ * @author robert spech.111
+ *
+ */
+public final class Newton4 {
+
+    /**
+     * Private constructor so this utility class cannot be instantiated.
+     */
+    private Newton4() {
+    }
+
+    /**
+     * Put a short phrase describing the static method myMethod here.
+     *
+     * @param range
+     *            range of error
+     * @param x
+     *            x will be the given number by the user
+     * @return the sqrt will be returned
+     */
+    private static double sqrt(double x, double range) {
+        double original = x;
+        double guess = x;
+        //guess will be the variable that changes;
+        final double half = 0.50;
+        // range represents the epsilon value or error value
+        // half is the constant used to calculate the guess
+        boolean finished = false;
+        while (!finished && x != 0) {
+            //ensures division by 0 doesn't happen if 0 is the input
+            guess = (half) * (original / guess + guess);
+            double error = Math.abs((guess * guess - original)) / original;
+            //this is able to calculate the error
+
+            if (error < range) {
+                finished = true;
+                //when the project is finished it will no longer loop
+            }
+        }
+
+        return guess;
+    }
+
+    /**
+     * Main method.
+     *
+     * The main method will house the basic components of the program it will
+     * ask for user input and then send to the method to calculate the sqrt This
+     * Version allows for the user to choose the epsilon value
+     *
+     * This version no longer asks whether a user wants a sqrt it will continue
+     * giving square roots until a negative value is input
+     *
+     * @param args
+     *            the command line arguments
+     */
+    public static void main(String[] args) {
+        //Creates the reader and writer
+        SimpleReader in = new SimpleReader1L();
+        SimpleWriter out = new SimpleWriter1L();
+        out.print("Enter a value to find the square root of: ");
+        double square = in.nextDouble();
+        // sets the check variable to the users input, y or anything else
+        while (square >= 0) {
+            out.print("Enter the Epsilon value to use for error checking: ");
+            double epsilon = in.nextDouble();
+            // once a square root is requested, the program will ask for a value
+            // for the square and the epsilon value
+            double root = sqrt(square, epsilon);
+            out.println("Your square root is " + root);
+            out.print("Enter a value to find the square root of: ");
+            square = in.nextDouble();
+            // rechecks whether or not the user wants to do another one.
+        }
+
+        /*
+         * Close input and output streams
+         */
+        in.close();
+        out.close();
+    }
+
+}
